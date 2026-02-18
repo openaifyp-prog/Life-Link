@@ -136,29 +136,52 @@ function updateAuthUI(isLoggedIn, name = '', role = 'donor') {
         const isTrackerIcon = btn.querySelector('.fa-chart-line');
 
         if (isLoggedIn) {
-            if (isRegisterLink || isProfileIcon) {
-                // If it's the mobile register link in the menu, we usually hide it when logged in
-                // unless we want it to become "Profile"
-                if (btn.id === 'mobile-register-link') {
-                    btn.style.display = 'none';
-                    return;
+                // Special handling for Mobile Bottom Nav Profile Link
+                const isBottomNavLink = btn.parentElement && btn.parentElement.classList.contains('fixed') && btn.parentElement.classList.contains('bottom-0');
+                
+                if (isBottomNavLink && (isTrackerLink || isProfileIcon)) {
+                     const icon = btn.querySelector('i');
+                     const span = btn.querySelector('span');
+                     const initials = name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'Profile';
+                     
+                     if (icon && span) {
+                         span.textContent = initials;
+                         // Ensure icon is correct for profile
+                         if (!icon.classList.contains('fa-user-circle')) {
+                             icon.className = 'fas fa-user-circle text-xl mb-1';
+                         }
+                     } else {
+                         btn.innerHTML = `<i class="fas fa-user-circle text-xl mb-1"></i><span class="text-xs font-medium">${initials}</span>`;
+                     }
+                     return; // handled
                 }
 
-                const span = btn.querySelector('span');
-                if (span && (span.textContent === 'Profile' || span.textContent === 'Register Now')) {
-                    if (role === 'admin') {
-                        span.textContent = 'Dashboard';
-                    } else {
-                        span.textContent = name ? name.split(' ')[0] : 'Profile';
+                if (isRegisterLink || isProfileIcon) {
+                    // If it's the mobile register link in the menu, we usually hide it when logged in
+                    // unless we want it to become "Profile"
+                    if (btn.id === 'mobile-register-link') {
+                        btn.style.display = 'none';
+                        return;
                     }
-                } else if (!isProfileIcon) {
-                    btn.innerHTML = `<i class="fas fa-user-circle mr-1"></i> ${name || 'Profile'}`;
+    
+                    const span = btn.querySelector('span');
+                    if (span) {
+                         if (role === 'admin') {
+                            span.textContent = 'Dashboard';
+                        } else {
+                            // Always enforce initials for mobile compactness
+                            // This fixes the issue where it might stick to full name if updateAuthUI is called multiple times
+                            const initials = name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'Profile';
+                            span.textContent = initials;
+                        }
+                    } else if (!isProfileIcon) {
+                        btn.innerHTML = `<i class="fas fa-user-circle mr-1"></i> ${name || 'Profile'}`;
+                    }
+    
+                    const targetPath = role === 'donor' ? 'tracker.html' : 'admin/index.html';
+                    const finalPath = isInAdmin ? (role === 'donor' ? '../tracker.html' : 'index.html') : targetPath;
+                    btn.setAttribute('href', finalPath);
                 }
-
-                const targetPath = role === 'donor' ? 'tracker.html' : 'admin/index.html';
-                const finalPath = isInAdmin ? (role === 'donor' ? '../tracker.html' : 'index.html') : targetPath;
-                btn.setAttribute('href', finalPath);
-            }
 
                 if (role === 'admin' && (isTrackerLink || isTrackerIcon)) {
                     // Only hide the parent if it's NOT the main desktop nav AND NOT the bottom nav
@@ -174,6 +197,24 @@ function updateAuthUI(isLoggedIn, name = '', role = 'donor') {
                     btn.style.display = ''; // Ensure it's visible (let CSS handle flex/block)
                 }
             } else {
+                // Special handling for Mobile Bottom Nav Profile Link
+                // It has structure: <a href="tracker.html" ...><i class="..."></i><span class="...">Profile</span></a>
+                const isBottomNavLink = btn.parentElement && btn.parentElement.classList.contains('fixed') && btn.parentElement.classList.contains('bottom-0');
+                
+                if (isBottomNavLink && (isTrackerLink || isProfileIcon)) {
+                     const icon = btn.querySelector('i');
+                     const span = btn.querySelector('span');
+                     const initials = name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'Profile';
+                     
+                     if (icon && span) {
+                         span.textContent = initials;
+                     } else {
+                         // Fallback if structure is different
+                         btn.innerHTML = `<i class="fas fa-user-circle text-xl mb-1"></i><span class="text-xs font-medium">${initials}</span>`;
+                     }
+                     return; // Skip standard logic for this specific link
+                }
+
                 if (isRegisterLink) {
                     btn.style.display = '';
                     const span = btn.querySelector('span');
@@ -197,7 +238,7 @@ function updateAuthUI(isLoggedIn, name = '', role = 'donor') {
     if (isLoggedIn) {
         if (authButtons) {
             authButtons.classList.remove('hidden');
-            authButtons.style.display = 'flex'; // Enforce visibility and layout
+            authButtons.style.display = 'flex'; // Force visible on mobile (Initials only via CSS)
         }
         if (registerLink) registerLink.style.display = 'none';
 
@@ -260,8 +301,8 @@ function updateAuthUI(isLoggedIn, name = '', role = 'donor') {
             authButtons.style.display = 'none'; // Enforce hidden state overriding md:flex
         }
         if (registerLink) {
-            // Restore register link (using inline-flex to match original styling)
-            registerLink.style.display = 'inline-flex';
+            // Restore register link (remove inline style to let CSS classes 'hidden md:inline-flex' handle responsiveness)
+            registerLink.style.display = '';
         }
     }
 }

@@ -57,6 +57,7 @@
                     </div>
                     <span class="font-heading font-bold text-2xl text-dark">LifeLink</span>
                 </a>
+                <!-- Desktop Nav -->
                 <div class="hidden md:flex items-center gap-8">
                     <a href="index.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Home</a>
                     <a href="find-donor.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Find Donor</a>
@@ -65,7 +66,10 @@
                     <a href="eligibility.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Eligibility</a>
                     <a href="tracker.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Tracker</a>
                     <a href="heatmap.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Analytics</a>
-                    <div class="flex items-center gap-4">
+                </div>
+
+                <!-- CTA & Mobile Toggle -->
+                <div class="flex items-center gap-4">
                     <a href="login.html" class="hidden md:inline-flex font-medium text-gray-600 hover:text-primary transition-colors" id="top-login-link">Login</a>
                     
                     <!-- Profile Area (Hidden by default, shown by api.js) -->
@@ -73,7 +77,7 @@
                         <div id="nav-profile-container" class="relative group">
                             <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-full pl-2 pr-4 py-1.5 hover:shadow-sm transition-shadow cursor-pointer">
                                 <div id="nav-profile-initials" class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">--</div>
-                                <span id="nav-profile-name" class="text-sm font-medium text-gray-700">Guest</span>
+                                <span id="nav-profile-name" class="hidden md:inline text-sm font-medium text-gray-700">Guest</span>
                                 <i class="fas fa-chevron-down text-xs text-gray-400 ml-1"></i>
                             </div>
                             <!-- Dropdown -->
@@ -92,9 +96,8 @@
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
-            </div>
         </div>
-        <div class="md:hidden hidden bg-white border-t border-gray-100" id="mobile-menu">
+        <div class="md:hidden hidden bg-white border-t border-gray-100 transition-all duration-300" id="mobile-menu">
             <div class="px-4 pt-2 pb-6 space-y-1">
                 <a href="awareness.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Awareness</a>
                 <a href="eligibility.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Eligibility</a>

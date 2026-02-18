@@ -78,14 +78,14 @@
 
           <!-- CTA & Mobile Toggle -->
           <div class="flex items-center gap-4">
-            <a href="login.html" id="top-login-link" class="hidden md:block font-medium text-gray-600 hover:text-primary transition-colors">Login</a>
+            <a href="login.html" id="top-login-link" class="block font-medium text-gray-600 hover:text-primary transition-colors">Login</a>
             
             <!-- Profile Area (Hidden by default, shown by api.js) -->
             <div id="auth-buttons" class="hidden md:flex items-center gap-3">
                 <div id="nav-profile-container" class="relative group">
                     <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-full pl-2 pr-4 py-1.5 hover:shadow-sm transition-shadow cursor-pointer">
                         <div id="nav-profile-initials" class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">--</div>
-                        <span id="nav-profile-name" class="text-sm font-medium text-gray-700">Guest</span>
+                        <span id="nav-profile-name" class="hidden md:inline text-sm font-medium text-gray-700">Guest</span>
                         <i class="fas fa-chevron-down text-xs text-gray-400 ml-1"></i>
                     </div>
                     <!-- Dropdown -->
