@@ -1,0 +1,106 @@
+/* LifeLink Custom Styles */
+
+/* Base Design System Variables (for non-Talkwind usage if needed) */
+:root {
+  --color-primary: #c0392b;
+  --color-secondary: #e74c3c;
+  --color-accent: #f39c12;
+  --color-success: #27ae60;
+  --color-surface: #ffffff;
+  --color-bg: #f9f9f9;
+  --color-text: #1a1a2e;
+  --color-muted: #6c757d;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Custom Animations */
+@keyframes pulse-border {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(192, 57, 43, 0);
+  }
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2s infinite;
+}
+
+/* Blood Group Badges */
+.blood-badge {
+  /* @apply flex items-center justify-center w-10 h-10 rounded-full font-bold text-white text-sm shadow-md; */
+  /* Fallback implementation if @apply not processed by CDN */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2.5rem !important; /* w-10 */
+  height: 2.5rem !important; /* h-10 */
+  border-radius: 9999px !important; /* rounded-full */
+  font-weight: 700 !important; /* font-bold */
+  color: white !important;
+  font-size: 0.875rem !important; /* text-sm */
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; /* shadow-md */
+}
+
+/* Specific Blood Group Colors (Utility classes to be used with Tailwind or standard CSS) */
+/* These will be handled via Tailwind config safelist or inline styles in JS, 
+   but defining standard classes here for reference/fallback */
+.badge-A_pos {
+  background-color: #c0392b;
+}
+.badge-A_neg {
+  background-color: #a93226;
+}
+.badge-B_pos {
+  background-color: #e74c3c;
+}
+.badge-B_neg {
+  background-color: #cb4335;
+}
+.badge-AB_pos {
+  background-color: #8e44ad;
+}
+.badge-AB_neg {
+  background-color: #9b59b6;
+}
+.badge-O_pos {
+  background-color: #e67e22;
+}
+.badge-O_neg {
+  background-color: #d35400;
+}
+
+/* Custom Scrollbar for Ticker or Feeds */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c0392b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a93226;
+}

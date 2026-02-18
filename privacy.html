@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | LifeLink</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C0392B',
+                        secondary: '#E74C3C',
+                        accent: '#F39C12',
+                        success: '#27AE60',
+                        surface: '#FFFFFF',
+                        bg: '#F9F9F9', 
+                        dark: '#1A1A2E',
+                        muted: '#6C757D'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-bg text-gray-800 antialiased font-sans pb-20 md:pb-0 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <i class="fas fa-droplet text-primary text-xl"></i>
+                    </div>
+                    <span class="font-heading font-bold text-2xl text-dark">LifeLink</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="find-donor.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Find Donor</a>
+                    <a href="emergency.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Emergency</a>
+                    <a href="awareness.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Awareness</a>
+                    <a href="eligibility.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Eligibility</a>
+                    <a href="tracker.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Tracker</a>
+                    <a href="heatmap.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Analytics</a>
+                </div>
+
+                <!-- CTA & Mobile Toggle -->
+                <div class="flex items-center gap-4">
+                    <a href="login.html" id="top-login-link" class="hidden md:inline-flex font-medium text-gray-600 hover:text-primary transition-colors">Login</a>
+                    
+                    <!-- Profile Area (Hidden by default, shown by api.js) -->
+                    <div id="auth-buttons" class="hidden md:flex items-center gap-3">
+                        <div id="nav-profile-container" class="relative group">
+                            <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-full pl-2 pr-4 py-1.5 hover:shadow-sm transition-shadow cursor-pointer">
+                                <div id="nav-profile-initials" class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">--</div>
+                                <span id="nav-profile-name" class="text-sm font-medium text-gray-700">Guest</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 ml-1"></i>
+                            </div>
+                            <!-- Dropdown -->
+                            <div id="nav-dropdown" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 hidden p-2 z-50 transition-all opacity-0 scale-95 origin-top-right">
+                                <button id="nav-logout-btn" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 font-medium">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="register-donor.html" id="top-register-link" class="hidden md:inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all hover:-translate-y-0.5">
+                        Register as Donor
+                    </a>
+                    <button class="md:hidden text-gray-600 hover:text-primary focus:outline-none" id="mobile-menu-btn">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-20 z-40 p-4 shadow-lg">
+        <div class="flex flex-col space-y-4">
+            <a href="index.html" class="text-gray-600 hover:text-primary font-medium">Home</a>
+            <a href="find-donor.html" class="text-gray-600 hover:text-primary font-medium">Find Donor</a>
+            <a href="emergency.html" class="text-gray-600 hover:text-primary font-medium">Emergency</a>
+            <a href="awareness.html" class="text-gray-600 hover:text-primary font-medium">Awareness</a>
+            <a href="eligibility.html" class="text-gray-600 hover:text-primary font-medium">Eligibility</a>
+            <a href="tracker.html" class="text-gray-600 hover:text-primary font-medium">Tracker</a>
+            <a href="heatmap.html" class="text-gray-600 hover:text-primary font-medium">Analytics</a>
+            <a href="login.html" class="text-gray-600 hover:text-primary font-medium">Login</a>
+            <a href="register-donor.html" class="text-primary font-bold">Register as Donor</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100">
+            <h1 class="text-3xl md:text-4xl font-heading font-bold text-dark mb-8 text-center">Privacy Policy</h1>
+            
+            <div class="prose prose-red max-w-none text-gray-600">
+                <p class="lead text-lg mb-6">Last updated: February 18, 2026</p>
+
+                <h2 class="text-2xl font-bold text-dark mt-8 mb-4">1. Introduction</h2>
+                <p class="mb-4">
+                    Welcome to LifeLink. We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your collected information when you visit our website or use our mobile application.
+                </p>
+
+                <h2 class="text-2xl font-bold text-dark mt-8 mb-4">2. Information We Collect</h2>
+                <p class="mb-4">
+                    We may collect information about you in a variety of ways. The information we may collect includes:
+                </p>
+                <ul class="list-disc pl-6 mb-4 space-y-2">
+                    <li><strong>Personal Data:</strong> Personally identifiable information, such as your name, shipping address, email address, and telephone number that you voluntarily give to us when you register directly with the Application.</li>
+                    <li><strong>Health Data:</strong> Blood group and other health-related information pertinent to blood donation eligibility.</li>
+                    <li><strong>Derivative Data:</strong> Information our servers automatically collect when you access the Application, such as your IP address, your browser type, your operating system, your access times, and the pages you have viewed directly before and after accessing the Application.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-dark mt-8 mb-4">3. Use of Your Information</h2>
+                <p class="mb-4">
+                    Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Application to:
+                </p>
+                <ul class="list-disc pl-6 mb-4 space-y-2">
+                    <li>Facilitate blood donation matches between donors and recipients.</li>
+                    <li>Send you notifications about emergency blood requests in your area.</li>
+                    <li>Compile anonymous statistical data and analysis for use internally or with third parties.</li>
+                    <li>Create and manage your account.</li>
+                    <li>Send you a newsletter.</li>
+                    <li>Email you regarding your account or order.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-dark mt-8 mb-4">4. Disclosure of Your Information</h2>
+                <p class="mb-4">
+                    We may share information we have collected about you in certain situations. Your information may be disclosed as follows:
+                </p>
+                <ul class="list-disc pl-6 mb-4 space-y-2">
+                    <li><strong>By Law or to Protect Rights:</strong> If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others, we may share your information as permitted or required by any applicable law, rule, or regulation.</li>
+                    <li><strong>Emergency Situations:</strong> With your explicit consent, your contact information may be shared with potential recipients or medical facilities in emergency situations.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-dark mt-8 mb-4">5. Security of Your Information</h2>
+                <p class="mb-4">
+                    We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse.
+                </p>
+
+                <h2 class="text-2xl font-bold text-dark mt-8 mb-4">6. Contact Us</h2>
+                <p class="mb-4">
+                    If you have questions or comments about this Privacy Policy, please contact us at:
+                </p>
+                <p class="font-medium text-dark">
+                    LifeLink HQ<br>
+                    Main Boulevard, Lahore, Pakistan<br>
+                    help@lifelink.org<br>
+                    0800-BLOOD (25663)
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-16 pb-8 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-droplet text-sm"></i>
+                        </div>
+                        <span class="font-heading font-bold text-xl text-dark">LifeLink</span>
+                    </a>
+                    <p class="text-muted text-sm leading-relaxed">
+                        Connecting blood donors with recipients to save lives. Building a
+                        healthier, more resilient community together.
+                    </p>
+                </div>
+                <!-- Links -->
+                <div>
+                    <h4 class="font-bold text-dark mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li><a href="index.html" class="hover:text-primary">Home</a></li>
+                        <li><a href="find-donor.html" class="hover:text-primary">Find Blood</a></li>
+                        <li><a href="emergency.html" class="hover:text-primary">Emergency</a></li>
+                        <li><a href="login.html" class="hover:text-primary">Login</a></li>
+                        <li><a href="register-donor.html" class="hover:text-primary">Register</a></li>
+                    </ul>
+                </div>
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-bold text-dark mb-6">Resources</h4>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li><a href="awareness.html" class="hover:text-primary">Donation Tips</a></li>
+                        <li><a href="eligibility.html" class="hover:text-primary">Eligibility Check</a></li>
+                        <li><a href="tracker.html" class="hover:text-primary">Donor Tracker</a></li>
+                        <li><a href="privacy.html" class="hover:text-primary text-primary font-medium">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-dark mb-6">Contact</h4>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-primary"></i>
+                            <span>LifeLink HQ, Main Boulevard, Lahore, Pakistan</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-envelope mt-1 text-primary"></i>
+                            <span>help@lifelink.org</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-phone mt-1 text-primary"></i>
+                            <span>0800-BLOOD (25663)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 pt-8 text-center">
+                <p class="text-sm text-gray-400">
+                    © 2025 LifeLink. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 flex justify-around py-3 shadow-lg safe-area-pb">
+        <a href="index.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-home text-xl mb-1"></i>
+            <span class="text-xs font-medium">Home</span>
+        </a>
+        <a href="find-donor.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-search text-xl mb-1"></i>
+            <span class="text-xs font-medium">Search</span>
+        </a>
+        <a href="emergency.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+             <div class="relative">
+                <i class="fas fa-heartbeat text-xl mb-1"></i>
+                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-white"></span>
+            </div>
+            <span class="text-xs font-medium">Emergency</span>
+        </a>
+        <a href="tracker.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-user-circle text-xl mb-1"></i>
+            <span class="text-xs font-medium">Profile</span>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/alerts.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

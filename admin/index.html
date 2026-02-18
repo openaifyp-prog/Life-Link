@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LifeLink</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C0392B',
+                        secondary: '#E74C3C',
+                        accent: '#F39C12',
+                        success: '#27AE60',
+                        surface: '#FFFFFF',
+                        bg: '#F9F9F9', 
+                        dark: '#1A1A2E',
+                        muted: '#6C757D'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script>
+        // Session Guard — redirect to login if not authenticated
+        (function() {
+            const SESSION_KEY = 'lifelink_admin_session';
+            try {
+                const raw = localStorage.getItem(SESSION_KEY);
+                if (!raw) { window.location.replace('../login.html'); return; }
+                const session = JSON.parse(raw);
+                if (!session.authenticated || session.expiry < Date.now()) {
+                    localStorage.removeItem(SESSION_KEY);
+                    window.location.replace('../login.html');
+                }
+            } catch (e) {
+                localStorage.removeItem(SESSION_KEY);
+                window.location.replace('../login.html');
+            }
+        })();
+    </script>
+    <style>
+        .sidebar-link.active {
+            background-color: rgba(192, 57, 43, 0.1);
+            color: #C0392B;
+            border-right: 3px solid #C0392B;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.15s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-bg text-gray-800 antialiased flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-100 flex-shrink-0 flex flex-col transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative z-30 h-full" id="sidebar">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100 mb-6">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <i class="fas fa-droplet text-primary"></i>
+                </div>
+                <span class="font-heading font-bold text-xl text-dark">LifeLink Admin</span>
+            </a>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
+            <a href="#" id="nav-dashboard" class="sidebar-link active flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors">
+                <i class="fas fa-th-large w-5"></i> Dashboard
+            </a>
+            <a href="#" id="nav-donors" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors">
+                <i class="fas fa-users w-5"></i> Donors
+            </a>
+            <a href="#" id="nav-requests" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors">
+                <i class="fas fa-file-medical w-5"></i> Emergency Requests
+            </a>
+            <a href="analytics.html" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors">
+                <i class="fas fa-chart-bar w-5"></i> Analytics
+            </a>
+
+        </nav>
+        
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-3 px-4 py-2 mb-2" id="admin-user-info">
+                <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-xs font-bold text-primary" id="admin-avatar">A</div>
+                <div class="text-sm">
+                    <p class="font-medium text-dark leading-tight" id="admin-name">Admin</p>
+                    <p class="text-xs text-muted" id="admin-role">Administrator</p>
+                </div>
+            </div>
+            <button id="admin-logout-btn" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full text-left">
+                <i class="fas fa-sign-out-alt w-5"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="fixed inset-0 bg-black/50 z-20 md:hidden hidden" id="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4">
+                <button id="sidebar-toggle" class="md:hidden text-gray-500 hover:text-dark focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="hidden sm:flex relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" placeholder="Search donors, requests..." class="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-primary outline-none w-64 transition-all focus:w-80">
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="w-8 h-8 rounded-full bg-dark text-white flex items-center justify-center font-bold text-sm">A</div>
+                    <span class="hidden sm:block text-sm font-medium text-gray-700">Admin User</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h1 id="page-title" class="text-2xl font-heading font-bold text-dark">Dashboard Overview</h1>
+                    <p class="text-sm text-muted">Welcome back! Here's what's happening today.</p>
+                </div>
+                <button id="admin-new-request-btn" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-red-700 transition-colors shadow-sm">
+                    <i class="fas fa-plus"></i> New Request
+                </button>
+            </div>
+
+            <!-- Stats Grid -->
+            <div id="dashboard-stats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Stat 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-primary">
+                            <i class="fas fa-users text-lg"></i>
+                        </div>
+                        <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+12%</span>
+                    </div>
+                    <div class="text-2xl font-bold text-dark mb-1" id="total-donors">--</div>
+                    <div class="text-xs text-muted font-medium">Total Donors</div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600">
+                            <i class="fas fa-ambulance text-lg"></i>
+                        </div>
+                        <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">+5</span>
+                    </div>
+                    <div class="text-2xl font-bold text-dark mb-1" id="active-emergencies">--</div>
+                    <div class="text-xs text-muted font-medium">Active Emergencies</div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center text-success">
+                            <i class="fas fa-check-circle text-lg"></i>
+                        </div>
+                        <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+8%</span>
+                    </div>
+                    <div class="text-2xl font-bold text-dark mb-1" id="fulfilled-matches">--</div>
+                    <div class="text-xs text-muted font-medium">Successful Matches</div>
+                </div>
+                <!-- Stat 4 -->
+                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                            <i class="fas fa-hand-holding-heart text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-dark mb-1" id="new-registrations">--</div>
+                    <div class="text-xs text-muted font-medium">New Donors (Last 7 Days)</div>
+                </div>
+            </div>
+
+            <!-- Recent Requests Table -->
+            <div id="requests-section" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold text-dark">Recent Emergency Requests</h3>
+                    <a href="#" id="view-all-requests-btn" class="text-sm text-primary font-medium hover:text-red-700">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-xs text-gray-500 uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="px-6 py-3">Patient</th>
+                                <th class="px-6 py-3">Hospital</th>
+                                <th class="px-6 py-3">Blood Group</th>
+                                <th class="px-6 py-3">Urgency</th>
+                                <th class="px-6 py-3">Status</th>
+                                <th class="px-6 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm" id="admin-requests-table">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Donors Table -->
+            <div id="donors-section" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold text-dark">Newest Donors</h3>
+                    <a href="#" id="view-all-donors-btn" class="text-sm text-primary font-medium hover:text-red-700">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-xs text-gray-500 uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="px-6 py-3">Name</th>
+                                <th class="px-6 py-3">City</th>
+                                <th class="px-6 py-3">Blood Group</th>
+                                <th class="px-6 py-3">Contact</th>
+                                <th class="px-6 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm" id="admin-donors-table">
+                             <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/alerts.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

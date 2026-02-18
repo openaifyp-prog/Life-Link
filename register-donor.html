@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as Donor | LifeLink</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C0392B',
+                        secondary: '#E74C3C',
+                        accent: '#F39C12',
+                        success: '#27AE60',
+                        surface: '#FFFFFF',
+                        bg: '#F9F9F9', 
+                        dark: '#1A1A2E',
+                        muted: '#6C757D'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-bg text-gray-800 antialiased font-sans pb-20 md:pb-0 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <i class="fas fa-droplet text-primary text-xl"></i>
+                    </div>
+                    <span class="font-heading font-bold text-2xl text-dark">LifeLink</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="find-donor.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Find Donor</a>
+                    <a href="emergency.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Emergency</a>
+                    <a href="awareness.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Awareness</a>
+                    <a href="eligibility.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Eligibility</a>
+                    <a href="tracker.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Tracker</a>
+                    <a href="heatmap.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Analytics</a>
+                </div>
+                <!-- Mobile Toggle -->
+                <button class="md:hidden text-gray-600 hover:text-primary focus:outline-none" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu (Hidden) -->
+        <div class="md:hidden hidden bg-white border-t border-gray-100" id="mobile-menu">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Home</a>
+                <a href="find-donor.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Find Donor</a>
+                <a href="emergency.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Emergency</a>
+                <a href="awareness.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Awareness</a>
+                <a href="eligibility.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Eligibility</a>
+                <a href="tracker.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Tracker</a>
+                <a href="heatmap.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Analytics</a>
+                <!-- Admin shortcut -->
+                <a href="admin/index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Admin</a>
+                <a href="register-donor.html" class="block mt-4 px-3 py-2 rounded-md text-base font-medium text-center text-white bg-primary">Register Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row gap-12 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            
+            <!-- Left Column: Registration Form -->
+            <div class="w-full lg:w-2/3 p-8 lg:p-12">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-heading font-bold text-dark mb-2">Become a Donor</h1>
+                    <p class="text-muted">Join our community of heroes. Please fill in your details accurately.</p>
+                </div>
+
+                <form id="register-form" class="space-y-6" novalidate>
+                    <!-- Personal Info -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="fullName" name="fullName" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors" placeholder="e.g. Ali Khan">
+                            <p class="text-xs text-red-500 hidden error-msg">Name is required</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label for="age" class="block text-sm font-medium text-gray-700">Age <span class="text-red-500">*</span></label>
+                                <input type="number" id="age" name="age" min="18" max="65" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors" placeholder="18-65">
+                                <p class="text-xs text-red-500 hidden error-msg">Must be 18-65</p>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Gender <span class="text-red-500">*</span></label>
+                                <div class="flex gap-4 pt-3">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="gender" value="Male" required class="mr-2 accent-primary"> Male
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="gender" value="Female" required class="mr-2 accent-primary"> Female
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical Info -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                         <div class="space-y-2">
+                            <label for="bloodGroup" class="block text-sm font-medium text-gray-700">Blood Group <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select id="bloodGroup" name="bloodGroup" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none cursor-pointer">
+                                    <option value="">Select Type</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                                <i class="fas fa-tint absolute right-4 top-1/2 -translate-y-1/2 text-primary/50 pointer-events-none"></i>
+                            </div>
+                            <p class="text-xs text-red-500 hidden error-msg">Blood group is required</p>
+                        </div>
+
+                         <div class="space-y-2">
+                            <label for="lastDonation" class="block text-sm font-medium text-gray-700">Last Donation Date</label>
+                            <input type="date" id="lastDonation" name="lastDonation" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="city" class="block text-sm font-medium text-gray-700">City <span class="text-red-500">*</span></label>
+                            <input type="text" id="city" name="city" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors" placeholder="e.g. Karachi">
+                            <p class="text-xs text-red-500 hidden error-msg">City is required</p>
+                        </div>
+                         <div class="space-y-2">
+                            <label for="area" class="block text-sm font-medium text-gray-700">Area / Neighborhood</label>
+                            <input type="text" id="area" name="area" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors" placeholder="e.g. Clifton">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                         <div class="space-y-2">
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number <span class="text-red-500">*</span></label>
+                            <div class="flex">
+                                <select class="bg-gray-100 border border-gray-200 border-r-0 rounded-l-lg px-3 py-3 text-sm focus:outline-none">
+                                    <option>+92</option>
+                                </select>
+                                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-r-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors" placeholder="3001234567">
+                            </div>
+                            <p class="text-xs text-red-500 hidden error-msg">Valid phone required (10 digits)</p>
+                        </div>
+                         <div class="space-y-2">
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address (Optional)</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors" placeholder="you@example.com">
+                        </div>
+                    </div>
+
+                    <!-- Additional Details -->
+                    <div class="space-y-4 pt-4 border-t border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <label class="text-sm font-medium text-gray-700">Available to donate now?</label>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" name="available" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success"></div>
+                            </label>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Health Conditions (if any)</label>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="condition" value="Diabetes" class="rounded text-primary focus:ring-primary"> <span>Diabetes</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="condition" value="Hypertension" class="rounded text-primary focus:ring-primary"> <span>Hypertension (BP)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="condition" value="None" checked class="rounded text-primary focus:ring-primary"> <span>None / Healthy</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2" for="password">Password</label>
+                        <input class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-4 focus:ring-red-500/10 transition-all" type="password" id="password" placeholder="Create a password (min 6 chars)">
+                        <p class="text-red-500 text-sm mt-1 hidden" id="error-password"></p>
+                    </div>
+
+                    <!-- Consent -->
+                    <div class="pt-4">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" id="consent" required class="mt-1 rounded text-primary focus:ring-primary">
+                            <span class="text-sm text-muted">I confirm that the information provided is accurate and I consent to being contacted for blood donation requests.</span>
+                        </label>
+                         <p class="text-xs text-red-500 hidden error-msg ml-7">Consent is required</p>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Register as Donor
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Column: Info Panel -->
+            <div class="hidden lg:flex w-1/3 bg-gradient-to-br from-red-50 to-white border-l border-gray-100 flex-col p-12">
+                <div class="mb-8">
+                    <h3 class="font-heading font-bold text-xl text-dark mb-6">Why Register?</h3>
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">Instant Alerts</h4>
+                                <p class="text-sm text-muted">Get notified immediately when your blood type is needed nearby.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">Community Impact</h4>
+                                <p class="text-sm text-muted">Join a network of thousands helping patients in emergencies.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">Track Health</h4>
+                                <p class="text-sm text-muted">Keep a log of your donations and monitor your eligibility.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-auto bg-primary/5 p-6 rounded-xl border border-primary/10">
+                    <p class="text-primary italic font-medium leading-relaxed">
+                        "You have the power to save up to 3 lives with a single donation."
+                    </p>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-xs text-muted">LifeLink Eligibility Guidelines Apply</p>
+                    <a href="eligibility.html" class="text-xs font-bold text-primary hover:underline">Check if you can donate</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Overlay (Hidden) -->
+    <div id="success-overlay" class="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center transform scale-95 transition-transform duration-300" id="success-modal">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500 text-4xl animate-bounce">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="text-3xl font-heading font-bold text-dark mb-2">Thank You!</h2>
+            <p class="text-muted mb-8">You're now registered as a LifeLink donor! 🎉<br>Your generosity makes a difference.</p>
+            
+            <div class="space-y-3">
+                <button onclick="window.location.href='index.html'" class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-red-700 transition-colors">
+                    Go to Homepage
+                </button>
+                <button onclick="document.getElementById('success-overlay').classList.add('hidden')" class="w-full bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-16 pb-8 mt-auto">
+        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-droplet text-sm"></i>
+                        </div>
+                        <span class="font-heading font-bold text-xl text-dark">LifeLink</span>
+                    </a>
+                    <p class="text-muted text-sm leading-relaxed">
+                        Connecting blood donors with recipients to save lives. Building a healthier, more resilient community together.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-all"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="font-bold text-dark mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li><a href="index.html" class="hover:text-primary">Home</a></li>
+                        <li><a href="find-donor.html" class="hover:text-primary">Find a Donor</a></li>
+                        <li><a href="emergency.html" class="hover:text-primary">Post Request</a></li>
+                        <li><a href="register-donor.html" class="hover:text-primary">Register</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-bold text-dark mb-6">Resources</h4>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li><a href="awareness.html" class="hover:text-primary">Donation Tips</a></li>
+                        <li><a href="eligibility.html" class="hover:text-primary">Eligibility Check</a></li>
+                         <li><a href="tracker.html" class="hover:text-primary">Donor Tracker</a></li>
+                        <li><a href="privacy.html" class="hover:text-primary">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-dark mb-6">Contact</h4>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-primary"></i>
+                            <span>LifeLink HQ, Main Boulevard, Lahore, Pakistan</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-envelope mt-1 text-primary"></i>
+                            <span>help@lifelink.org</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-phone mt-1 text-primary"></i>
+                            <span>0800-BLOOD (25663)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+             <div class="border-t border-gray-100 pt-8 text-center">
+                <p class="text-sm text-gray-400">© 2025 LifeLink. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 flex justify-around py-3 shadow-lg safe-area-pb">
+        <a href="index.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-home text-xl mb-1"></i>
+            <span class="text-xs font-medium">Home</span>
+        </a>
+        <a href="find-donor.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-search text-xl mb-1"></i>
+            <span class="text-xs font-medium">Search</span>
+        </a>
+        <a href="emergency.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+             <div class="relative">
+                <i class="fas fa-heartbeat text-xl mb-1"></i>
+                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-white"></span>
+            </div>
+            <span class="text-xs font-medium">Emergency</span>
+        </a>
+        <a href="tracker.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-chart-line text-xl mb-1"></i>
+            <span class="text-xs font-medium">Tracker</span>
+        </a>
+         <a href="register-donor.html" class="flex flex-col items-center text-primary transition-colors">
+            <i class="fas fa-user-circle text-xl mb-1"></i>
+            <span class="text-xs font-medium">Profile</span>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/alerts.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/register.js"></script>
+    <script>
+         document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+             document.getElementById('mobile-menu').classList.toggle('hidden');
+         });
+    </script>
+</body>
+</html>

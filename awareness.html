@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Awareness | LifeLink</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C0392B',
+                        secondary: '#E74C3C',
+                        accent: '#F39C12',
+                        success: '#27AE60',
+                        surface: '#FFFFFF',
+                        bg: '#F9F9F9', 
+                        dark: '#1A1A2E',
+                        muted: '#6C757D'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Custom Accordion Styles */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary ~ * {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        details > summary .icon {
+            transition: transform 0.3s ease;
+        }
+        details[open] > summary .icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-bg text-gray-800 antialiased font-sans pb-20 md:pb-0 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <i class="fas fa-droplet text-primary text-xl"></i>
+                    </div>
+                    <span class="font-heading font-bold text-2xl text-dark">LifeLink</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="find-donor.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Find Donor</a>
+                    <a href="emergency.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Emergency</a>
+                    <a href="awareness.html" class="font-medium text-primary">Awareness</a>
+                    <a href="eligibility.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Eligibility</a>
+                    <a href="tracker.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Tracker</a>
+                    <a href="heatmap.html" class="font-medium text-gray-600 hover:text-primary transition-colors">Analytics</a>
+                </div>
+                <div class="flex items-center gap-4">
+                     <a href="login.html" id="top-login-link" class="hidden md:inline-flex font-medium text-gray-600 hover:text-primary transition-colors">Login</a>
+                     
+                     <!-- Profile Area (Hidden by default, shown by api.js) -->
+                     <div id="auth-buttons" class="hidden md:flex items-center gap-3">
+                         <div id="nav-profile-container" class="relative group">
+                             <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-full pl-2 pr-4 py-1.5 hover:shadow-sm transition-shadow cursor-pointer">
+                                 <div id="nav-profile-initials" class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">--</div>
+                                 <span id="nav-profile-name" class="text-sm font-medium text-gray-700">Guest</span>
+                                 <i class="fas fa-chevron-down text-xs text-gray-400 ml-1"></i>
+                             </div>
+                             <!-- Dropdown -->
+                             <div id="nav-dropdown" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 hidden p-2 z-50 transition-all opacity-0 scale-95 origin-top-right">
+                                 <button id="nav-logout-btn" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 font-medium">
+                                     <i class="fas fa-sign-out-alt"></i> Logout
+                                 </button>
+                             </div>
+                         </div>
+                     </div>
+
+                     <a href="register-donor.html" id="top-register-link" class="hidden md:inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all hover:-translate-y-0.5">
+                        Register as Donor
+                    </a>
+                    <button class="md:hidden text-gray-600 hover:text-primary focus:outline-none" id="mobile-menu-btn">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden bg-white border-t border-gray-100" id="mobile-menu">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="awareness.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-red-50">Awareness</a>
+                <a href="eligibility.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Eligibility</a>
+                <a href="heatmap.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary">Analytics</a>
+                <a href="admin/index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary" id="mobile-admin-link">Admin Dashboard</a>
+                
+                <div class="border-t border-gray-100 my-2"></div>
+                
+                <!-- Auth dependent items -->
+                <a href="login.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-primary" id="mobile-login-link">Login</a>
+                <a href="register-donor.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary text-center mt-2" id="mobile-register-link">Register as Donor</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50" id="mobile-logout-link" style="display: none;">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-dark pt-32 pb-24 px-4 overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute top-1/2 -right-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s"></div>
+            <div class="absolute bottom-0 left-1/4 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+        </div>
+
+        <div class="container mx-auto relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-primary text-sm font-semibold mb-8 animate-fade-in-up">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </span>
+                Knowledge Saves Lives
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-heading font-bold text-dark leading-tight mb-8">
+                Become the Life <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Someone Needs</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
+                Step into the world of blood donation. Every drop counts, <br class="hidden md:block"/> and every donor is a hero in the making.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="register-donor.html" class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-red-700 text-white font-bold rounded-xl shadow-2xl shadow-red-500/20 transition-all hover:-translate-y-1">
+                    Join the Mission
+                </a>
+                <a href="#stats" class="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl border border-white/10 backdrop-blur-md transition-all">
+                    Explore Impact
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Cards (Overlay) -->
+    <section id="stats" class="container mx-auto px-4 -mt-16 relative z-20 mb-24">
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100/50 group hover:-translate-y-2 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-50 text-primary rounded-2xl flex items-center justify-center mb-6 text-2xl group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="text-4xl font-bold text-dark mb-1">3+</div>
+                <div class="text-muted font-medium mb-3">Lives Saved</div>
+                <div class="h-1 w-12 bg-red-100 rounded-full group-hover:w-full transition-all duration-500"></div>
+                <p class="text-xs text-gray-400 mt-4 leading-relaxed italic">By a single donation of 450ml.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100/50 group hover:-translate-y-2 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 text-2xl group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="text-4xl font-bold text-dark mb-1">8-10</div>
+                <div class="text-muted font-medium mb-1">Minutes</div>
+                <div class="h-1 w-12 bg-blue-100 rounded-full group-hover:w-full transition-all duration-500"></div>
+                <p class="text-xs text-gray-400 mt-4 leading-relaxed italic">The brief time it takes to donate blood.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100/50 group hover:-translate-y-2 transition-all duration-300">
+                <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6 text-2xl group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-users-viewfinder"></i>
+                </div>
+                <div class="text-4xl font-bold text-dark mb-1">5%</div>
+                <div class="text-muted font-medium mb-1">Eligible Population</div>
+                <div class="h-1 w-12 bg-green-100 rounded-full group-hover:w-full transition-all duration-500"></div>
+                <p class="text-xs text-gray-400 mt-4 leading-relaxed italic">Only a small fraction currently donate.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100/50 group hover:-translate-y-2 transition-all duration-300">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 text-2xl group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-droplet"></i>
+                </div>
+                <div class="text-4xl font-bold text-dark mb-1">24h</div>
+                <div class="text-muted font-medium mb-1">Recovery</div>
+                <div class="h-1 w-12 bg-amber-100 rounded-full group-hover:w-full transition-all duration-500"></div>
+                <p class="text-xs text-gray-400 mt-4 leading-relaxed italic">Your body replaces fluids remarkably fast.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 pb-20">
+        
+        <!-- Eligibility Stats Summary (Updated) -->
+        <div class="grid md:grid-cols-3 gap-8 mb-24">
+            <!-- Age -->
+            <div class="relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl -z-10"></div>
+                <div class="p-8 border border-gray-100 rounded-3xl transition-all group-hover:border-blue-200">
+                    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 text-blue-600 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-dark mb-4 group-hover:text-blue-600 transition-colors">Age: 18-65</h3>
+                    <p class="text-muted text-sm leading-relaxed">Donors must be between 18 and 65 years old. 16-17 year olds may donate with parental consent in some regions.</p>
+                </div>
+            </div>
+            <!-- Weight -->
+            <div class="relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-white opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl -z-10"></div>
+                <div class="p-8 border border-gray-100 rounded-3xl transition-all group-hover:border-green-200">
+                    <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-6 text-green-600 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-weight"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-dark mb-4 group-hover:text-green-600 transition-colors">Weight: 50kg+</h3>
+                    <p class="text-muted text-sm leading-relaxed">You must weigh at least 50 kg (110 lbs) to donate whole blood safely without health risks.</p>
+                </div>
+            </div>
+            <!-- Health -->
+            <div class="relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-red-50 to-white opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl -z-10"></div>
+                <div class="p-8 border border-gray-100 rounded-3xl transition-all group-hover:border-red-200">
+                    <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mb-6 text-primary text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-bold text-dark mb-4 group-hover:text-primary transition-colors">Good Health</h3>
+                    <p class="text-muted text-sm leading-relaxed">You should feel well on the day of donation. No colds, flu, or other infections. Normal iron levels are required.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Compatibility Matrix -->
+        <div class="mb-24">
+            <h2 class="text-3xl font-heading font-bold text-dark mb-12 text-center">Who can receive your blood?</h2>
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[600px] sm:min-w-full">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="p-6 font-bold text-dark">Donor Type</th>
+                                <th class="p-6 font-bold text-primary">Can Give To</th>
+                                <th class="p-6 font-bold text-blue-600">Can Receive From</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <!-- A+ -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">A+</span></td>
+                                <td class="p-6 text-sm">A+, AB+</td>
+                                <td class="p-6 text-sm">A+, A-, O+, O-</td>
+                            </tr>
+                            <!-- A- -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">A-</span></td>
+                                <td class="p-6 text-sm">A+, A-, AB+, AB-</td>
+                                <td class="p-6 text-sm">A-, O-</td>
+                            </tr>
+                            <!-- B+ -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">B+</span></td>
+                                <td class="p-6 text-sm">B+, AB+</td>
+                                <td class="p-6 text-sm">B+, B-, O+, O-</td>
+                            </tr>
+                            <!-- B- -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">B-</span></td>
+                                <td class="p-6 text-sm">B+, B-, AB+, AB-</td>
+                                <td class="p-6 text-sm">B-, O-</td>
+                            </tr>
+                            <!-- AB+ -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">AB+</span></td>
+                                <td class="p-6 text-sm">AB+ (Universal Recipient)</td>
+                                <td class="p-6 text-sm">All Blood Types</td>
+                            </tr>
+                            <!-- AB- -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">AB-</span></td>
+                                <td class="p-6 text-sm">AB+, AB-</td>
+                                <td class="p-6 text-sm">A-, B-, AB-, O-</td>
+                            </tr>
+                            <!-- O+ -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-bold">O+</span></td>
+                                <td class="p-6 text-sm">A+, B+, AB+, O+</td>
+                                <td class="p-6 text-sm">O+, O-</td>
+                            </tr>
+                            <!-- O- -->
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6"><span class="px-4 py-1.5 bg-red-600 text-white rounded-lg font-bold shadow-lg shadow-red-500/20">O-</span></td>
+                                <td class="p-6 text-sm font-bold text-red-600">Universal Donor (All Types)</td>
+                                <td class="p-6 text-sm">O-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Process Timeline Redesigned -->
+        <div class="mb-24">
+            <h2 class="text-3xl font-heading font-bold text-dark text-center mb-16">The Donor's Journey</h2>
+            
+            <div class="grid md:grid-cols-4 gap-4 relative">
+                <!-- Connector Line (Desktop) -->
+                <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gray-100 -z-10"></div>
+                
+                <!-- Step 1 -->
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 text-center hover:shadow-xl transition-all group">
+                    <div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto -mt-12 mb-6 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Phase 01</div>
+                    <h3 class="font-bold text-lg mb-3">Registration</h3>
+                    <p class="text-sm text-muted leading-relaxed">A simple sign-up process and basic health questionnaire to ensure safety.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 text-center hover:shadow-xl transition-all group mt-12 md:mt-0">
+                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto -mt-12 mb-6 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">Phase 02</div>
+                    <h3 class="font-bold text-lg mb-3">Health Audit</h3>
+                    <p class="text-sm text-muted leading-relaxed">Mini-physical: pulse, blood pressure, temp, and iron level check.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 text-center hover:shadow-xl transition-all group mt-12 md:mt-0">
+                    <div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto -mt-12 mb-6 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+                    <div class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Phase 03</div>
+                    <h3 class="font-bold text-lg mb-3">Donation</h3>
+                    <p class="text-sm text-muted leading-relaxed">The main event! Relax for 8-10 mins while you save three lives.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 text-center hover:shadow-xl transition-all group mt-12 md:mt-0">
+                    <div class="w-16 h-16 bg-green-600 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto -mt-12 mb-6 shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-cookie-bite"></i>
+                    </div>
+                    <div class="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">Phase 04</div>
+                    <h3 class="font-bold text-lg mb-3">Refuel</h3>
+                    <p class="text-sm text-muted leading-relaxed">Relax with snacks and drinks for 15 mins. You earned it!</p>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <a href="register-donor.html" class="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-2xl shadow-2xl shadow-red-500/30 hover:-translate-y-1 transition-all">
+                    Start Your Hero Journey
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Preparation & Recovery Checklist -->
+        <div class="grid lg:grid-cols-2 gap-12 mb-24">
+            <div class="bg-blue-600 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl shadow-blue-500/20">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+                <h2 class="text-3xl font-heading font-bold mb-8 flex items-center gap-3">
+                    <i class="fas fa-clipboard-check text-blue-200"></i>
+                    Preparation
+                </h2>
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4 group">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-transform group-hover:scale-110">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold block mb-1">Hydrate Well</span>
+                            <p class="text-blue-100 text-sm">Drink an extra 500ml of water or non-alcoholic fluids before your appointment.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4 group">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-transform group-hover:scale-110">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold block mb-1">Eat a Healthy Meal</span>
+                            <p class="text-blue-100 text-sm">Avoid fatty foods and focus on iron-rich options like spinach or lean meat.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4 group">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-transform group-hover:scale-110">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold block mb-1">Get Good Sleep</span>
+                            <p class="text-blue-100 text-sm">Ensure a restful 7-8 hours of sleep the night before your donation.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-green-600 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl shadow-green-500/20">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+                <h2 class="text-3xl font-heading font-bold mb-8 flex items-center gap-3">
+                    <i class="fas fa-user-shield text-green-200"></i>
+                    Recovery
+                </h2>
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4 group">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-transform group-hover:scale-110">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold block mb-1">Stay for Refreshments</span>
+                            <p class="text-green-100 text-sm">Don't rush! Wait for 15 minutes and enjoy a snack to stabilize your sugar levels.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4 group">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-transform group-hover:scale-110">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold block mb-1">Keep the Bandage On</span>
+                            <p class="text-green-100 text-sm">Keep it for at least 4-5 hours to prevent bruising and promote healing.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4 group">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 transition-transform group-hover:scale-110">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold block mb-1">Avoid Heavy Lifting</span>
+                            <p class="text-green-100 text-sm">Give your arm a rest for the remainder of the day. No intense gym sessions!</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Health Benefits Section -->
+        <div class="bg-gray-900 rounded-3xl p-8 md:p-16 mb-24 relative overflow-hidden text-center">
+            <div class="absolute inset-0 opacity-20 pointer-events-none">
+                <div class="absolute top-1/2 left-0 w-96 h-96 bg-primary/30 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
+                <div class="absolute top-1/2 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            </div>
+            
+            <div class="relative z-10">
+                <span class="text-primary font-bold tracking-widest text-sm uppercase mb-4 block">Unexpected Perks</span>
+                <h2 class="text-3xl md:text-5xl font-heading font-bold text-white mb-12">The Health Side of Giving</h2>
+                
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div class="group">
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl text-primary transition-all group-hover:bg-primary group-hover:text-white group-hover:rotate-6">
+                            <i class="fas fa-heart-pulse"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Heart Health</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">Regular donation helps maintain healthy iron levels and reduces cardiovascular risks.</p>
+                    </div>
+                    <div class="group">
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl text-blue-400 transition-all group-hover:bg-blue-600 group-hover:text-white group-hover:-rotate-6">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Free Mini-Checkup</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">Get insights on your pulse, BP, and hemoglobin levels with every donation visit.</p>
+                    </div>
+                    <div class="group">
+                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl text-green-400 transition-all group-hover:bg-green-600 group-hover:text-white group-hover:scale-110">
+                            <i class="fas fa-vial-circle-check"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Cell Renewal</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">Donating triggers your body to produce fresh red blood cells, revitalizing your system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Myths vs Facts (Accordion) - Polished -->
+        <div class="grid lg:grid-cols-2 gap-12 items-stretch mb-20">
+            <div class="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-xl">
+                <h2 class="text-3xl font-heading font-bold text-dark mb-8">Myths vs. Facts</h2>
+                <div class="space-y-4">
+                    <!-- Item 1 -->
+                    <details class="group bg-gray-50/50 rounded-2xl border border-transparent open:border-primary/20 open:bg-white transition-all duration-300">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer font-bold text-dark marker:content-none list-none">
+                            <span>Myth: Donating blood hurts a lot.</span>
+                            <span class="icon text-primary transition-transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="px-6 pb-6 text-gray-600 animate-fade-in">
+                            <p class="pl-4 border-l-2 border-primary/20 leading-relaxed text-sm">
+                                <span class="font-bold text-success block mb-1">Fact:</span> You may feel a slight pinch when the needle goes in, but the process is mostly painless. Most donors say the satisfaction outweighs the discomfort.
+                            </p>
+                        </div>
+                    </details>
+                    <!-- Item 2 -->
+                    <details class="group bg-gray-50/50 rounded-2xl border border-transparent open:border-primary/20 open:bg-white transition-all duration-300">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer font-bold text-dark marker:content-none list-none">
+                            <span>Myth: I'll get weak or sick.</span>
+                            <span class="icon text-primary transition-transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="px-6 pb-6 text-gray-600 animate-fade-in">
+                            <p class="pl-4 border-l-2 border-primary/20 leading-relaxed text-sm">
+                                <span class="font-bold text-success block mb-1">Fact:</span> You only donate about 1 pint, which your body replaces fluid-wise within 24-48 hours. Most donors resume normal activities immediately.
+                            </p>
+                        </div>
+                    </details>
+                    <!-- Item 3 -->
+                    <details class="group bg-gray-50/50 rounded-2xl border border-transparent open:border-primary/20 open:bg-white transition-all duration-300">
+                        <summary class="flex justify-between items-center p-6 cursor-pointer font-bold text-dark marker:content-none list-none">
+                            <span>Myth: I can't donate with a tattoo.</span>
+                            <span class="icon text-primary transition-transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="px-6 pb-6 text-gray-600 animate-fade-in">
+                            <p class="pl-4 border-l-2 border-primary/20 leading-relaxed text-sm">
+                                <span class="font-bold text-success block mb-1">Fact:</span> You CAN donate! Usually, you just need to wait 3-6 months after getting a tattoo if it was done at a regulated facility.
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            
+            <!-- Side Call to Action -->
+            <div class="bg-gradient-to-br from-primary to-secondary rounded-3xl p-10 text-white relative overflow-hidden flex flex-col justify-center items-center text-center shadow-2xl shadow-red-500/20 group">
+                <div class="absolute inset-0 opacity-20 pattern-dots group-hover:scale-110 transition-transform duration-700"></div>
+                <div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-8 text-4xl backdrop-blur-md relative z-10">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-6 relative z-10 font-heading">Still have questions?</h3>
+                <p class="text-red-50 mb-10 relative z-10 text-lg opacity-90">Our interactive eligibility tool can guide you through specific health criteria in seconds.</p>
+                <a href="eligibility.html" class="relative z-10 inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-primary font-bold rounded-2xl hover:bg-gray-50 transition-all hover:scale-105 shadow-xl">
+                    Check Eligibility
+                    <i class="fas fa-bolt text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-16 pb-8 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="md:col-span-1">
+                    <a href="index.html" class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                            <i class="fas fa-droplet text-primary"></i>
+                        </div>
+                        <span class="font-heading font-bold text-xl text-dark">LifeLink</span>
+                    </a>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Connecting donors with those in need. Simple, fast, and life-saving.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-dark mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="find-donor.html" class="hover:text-primary transition-colors">Find a Donor</a></li>
+                        <li><a href="register-donor.html" class="hover:text-primary transition-colors">Register as Donor</a></li>
+                        <li><a href="emergency.html" class="hover:text-primary transition-colors">Post Emergency</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-dark mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="awareness.html" class="hover:text-primary transition-colors">Blood Donation 101</a></li>
+                        <li><a href="eligibility.html" class="hover:text-primary transition-colors">Eligibility Checker</a></li>
+                        <li><a href="tracker.html" class="hover:text-primary transition-colors">Track Donation</a></li>
+                        <li><a href="privacy.html" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-dark mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2"><i class="fas fa-envelope text-primary"></i> help@lifelink.com</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-phone text-primary"></i> +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-100 pt-8 text-center">
+                <p class="text-sm text-gray-400">© 2025 LifeLink. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 flex justify-around py-3 shadow-lg safe-area-pb">
+        <a href="index.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-home text-xl mb-1"></i>
+            <span class="text-xs font-medium">Home</span>
+        </a>
+        <a href="find-donor.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-search text-xl mb-1"></i>
+            <span class="text-xs font-medium">Search</span>
+        </a>
+        <a href="emergency.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+             <div class="relative">
+                <i class="fas fa-heartbeat text-xl mb-1"></i>
+                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-white"></span>
+            </div>
+            <span class="text-xs font-medium">Emergency</span>
+        </a>
+        <a href="tracker.html" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors">
+            <i class="fas fa-user-circle text-xl mb-1"></i>
+            <span class="text-xs font-medium">Profile</span>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/alerts.js"></script>
+    <!-- Global API & Auth -->
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+         document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+             document.getElementById('mobile-menu').classList.toggle('hidden');
+         });
+    </script>
+</body>
+</html>

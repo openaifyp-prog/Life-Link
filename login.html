@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | LifeLink</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E63946',
+                        secondary: '#457B9D',
+                        dark: '#1D3557',
+                        light: '#F1FAEE',
+                        success: '#2A9D8F'
+                    },
+                    fontFamily: {
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Outfit"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .login-bg {
+            background: radial-gradient(circle at top left, rgba(230, 57, 70, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at bottom right, rgba(69, 123, 157, 0.05) 0%, transparent 40%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 login-bg flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100 flex flex-col">
+        <!-- Header -->
+        <div class="bg-gradient-to-br from-red-600 via-red-500 to-red-600 p-10 text-center text-white relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/medical-icons.png')]"></div>
+            
+            <a href="index.html" class="inline-flex items-center gap-3 text-3xl font-heading font-black tracking-tight relative z-10 hover:scale-105 transition-transform duration-300">
+                <i class="fas fa-heartbeat animate-pulse"></i>
+                LifeLink
+            </a>
+            <p class="mt-3 text-red-50/80 relative z-10 text-sm font-medium tracking-wide">ONE ACCESS. ALL ROLES.</p>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-10">
+            <div class="mb-8 text-center">
+                <h2 class="text-3xl font-bold text-dark mb-2">Welcome Back</h2>
+                <p class="text-gray-500 text-sm">Sign in with your email to access your portal</p>
+            </div>
+            
+            <form id="login-form" class="space-y-6">
+                <!-- Email -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2 text-sm ml-1" for="email">Email Address</label>
+                    <div class="relative group">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-primary focus:ring-4 focus:ring-red-500/10 transition-all text-sm font-medium" 
+                               type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <label class="text-gray-700 font-semibold text-sm" for="password">Password</label>
+                        <a href="#" class="text-primary text-xs font-bold hover:underline">Forgot?</a>
+                    </div>
+                    <div class="relative group">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-12 pr-12 py-4 focus:outline-none focus:border-primary focus:ring-4 focus:ring-red-500/10 transition-all text-sm font-medium" 
+                               type="password" id="password" placeholder="••••••••" required>
+                        <button type="button" id="toggle-password" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="login-error" class="hidden bg-red-50 text-red-600 p-4 rounded-2xl flex items-center gap-3 text-sm border border-red-100 animate-[shake_0.5s_ease-in-out]">
+                    <i class="fas fa-exclamation-circle text-lg"></i>
+                    <span id="error-text" class="font-medium">Invalid credentials</span>
+                </div>
+
+                <!-- Action Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-dark text-white font-bold py-4 rounded-2xl shadow-xl shadow-red-500/20 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 text-sm flex items-center justify-center gap-2">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </button>
+
+                <!-- Divider -->
+                <div class="relative py-4">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-100"></div></div>
+                    <div class="relative flex justify-center text-xs uppercase tracking-widest font-bold text-gray-400">
+                        <span class="bg-white px-4">New here?</span>
+                    </div>
+                </div>
+
+                <!-- Registration Link -->
+                <a href="register-donor.html" class="w-full border-2 border-primary/20 text-primary font-bold py-4 rounded-2xl hover:bg-red-50 transition-colors text-center inline-block text-sm">
+                    Create Donor Account
+                </a>
+
+                <div class="text-center">
+                    <a href="index.html" class="inline-flex items-center gap-2 text-gray-400 hover:text-dark transition-colors text-sm font-medium">
+                        <i class="fas fa-arrow-left text-xs"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+            20%, 40%, 60%, 80% { transform: translateX(4px); }
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
