@@ -5,7 +5,7 @@
 
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3000/api'
-    : 'https://lifelink-backend.vercel.app/api'; // Update this with your actual Vercel Backend URL after deployment
+    : 'https://life-link-backend-red.vercel.app/api'; // Vercel Backend URL
 
 /**
  * Make an API call to the LifeLink backend.
